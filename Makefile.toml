@@ -1,0 +1,10 @@
+[tasks.run]
+script = '''
+#!/bin/sh
+cargo run > image.ppm
+convert image.ppm image.png
+'''
+
+[tasks.clean]
+command = "rm"
+args = ["image.ppm", "image.png"]
