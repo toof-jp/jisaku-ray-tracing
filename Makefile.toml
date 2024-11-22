@@ -8,3 +8,8 @@ convert image.ppm image.png
 [tasks.clean]
 command = "rm"
 args = ["image.ppm", "image.png"]
+
+[tasks.open]
+dependencies = ["run"]
+command = "wsl-open"
+args = ["image.png"]
