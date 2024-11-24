@@ -2,7 +2,6 @@ use std::io::stdout;
 
 use jisaku_ray_tracing::{color::Color, ray::Ray, vec3::{Point3, Vec3}};
 
-
 fn main() {
     const ASPECT_RATIO: f64 = 16.0 / 9.0;
     const IMAGE_HEIGHT: u32 = 384;
@@ -33,7 +32,19 @@ fn main() {
 }
 
 fn ray_color(r: &Ray) -> Color {
+    if hit_sphere(Point3::new(0.0, 0.0, -1.0), 0.5, r) {
+        return Color::new(1.0, 0.0, 0.0);
+    }
     let unit_direction = r.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
+}
+
+fn hit_sphere(center: Point3, radius: f64, r: &Ray) -> bool {
+    let oc = r.origin() - center;
+    let a = r.direction.length_squared();
+    let half_b = oc.dot(&r.direction());
+    let c = oc.length_squared() - radius * radius;
+    let discriminant = half_b * half_b - a * c;
+    discriminant > 0.0
 }
